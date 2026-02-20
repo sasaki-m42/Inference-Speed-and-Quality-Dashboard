@@ -114,3 +114,9 @@ docker compose logs -f viz
 - Windows + Docker Desktop: ローカルディスク配下（例: `C:\...`）で動作確認  
   ※ 同期フォルダ/外部ドライブ配下ではボリュームマウントが失敗する場合があります
 - macOS + Docker Desktop: ローカル / Google Drive 配下で動作確認
+
+Prerequisites:
+- Docker Desktop (Windows/macOS) or Docker Engine + Docker Compose (Linux)
+
+Docker Desktop:
+- https://www.docker.com/products/docker-desktop/
