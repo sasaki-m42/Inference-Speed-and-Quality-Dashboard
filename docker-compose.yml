@@ -1,0 +1,47 @@
+name: edge-benchmark
+
+x-app-base: &app-base
+  build:
+    context: .
+    dockerfile: docker/Dockerfile
+  working_dir: /app
+  volumes:
+    - ./:/app
+  environment:
+    PYTHONPATH: /app/src
+    APP_DB_PATH: /app/artifacts/bench.db
+    APP_MODEL_DIR: /app/artifacts/models
+    APP_LGBM_MODEL: /app/artifacts/models/lgbm_model.txt
+    APP_CPP_MODEL: /app/artifacts/models/cpp_lr_model.json
+    APP_CSV_DATA_PATH: /app/data/raw/sample.csv
+
+services:
+  trainer:
+    <<: *app-base
+    command: python -m inference_bench.pipeline.run_trainer
+
+  infer_py:
+    <<: *app-base
+    command: python -m inference_bench.pipeline.run_infer_py --threads 1
+
+  infer_cpp:
+    <<: *app-base
+    command: python -m inference_bench.pipeline.run_infer_cpp --threads 1
+
+  infer_cpp_lr:
+    <<: *app-base
+    command: python -m inference_bench.pipeline.run_infer_cpp_lr --threads 1
+
+  export_static:
+    <<: *app-base
+    command: python -m inference_bench.viz.export_static
+
+  demo:
+    <<: *app-base
+    command: python -m inference_bench.pipeline.run_all --threads 1
+
+  viz:
+    <<: *app-base
+    command: streamlit run src/inference_bench/viz/app.py --server.address=0.0.0.0 --server.port=8501
+    ports:
+      - "8501:8501"

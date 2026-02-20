@@ -1,0 +1,12 @@
+artifacts/
+reports/site/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.venv/
+build/
+dist/
+.env
+.env.*
+!.env.example
