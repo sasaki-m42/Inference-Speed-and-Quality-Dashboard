@@ -1,9 +1,7 @@
 name: ci
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   benchmark:
@@ -24,6 +22,5 @@ jobs:
           name: benchmark-artifacts
           path: |
             artifacts/bench.db
-            artifacts/models
-            artifacts/logs
             reports/site
+          retention-days: 1
